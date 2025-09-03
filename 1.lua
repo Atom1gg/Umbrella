@@ -1206,9 +1206,13 @@ local function showModuleSettings(moduleName)
         elseif setting.type == "dropdown" then
             local dropDown = createDropDown(container, setting, UDim2.new(0, 0, 0, yOffset))
             yOffset = yOffset + 5
+        elseif setting.type == "button" then
+            local button = createButton(container, setting, UDim2.new(0, 0, 0, yOffset))
+            yOffset = yOffset + 5
         end
     end
 end
+
 
 local function createModuleButton(parent, moduleData)
     local moduleButton = Instance.new("Frame")
