@@ -346,6 +346,7 @@ function API:registerModule(category, moduleData)
 end
 
 function API:registerSettings(moduleName, settingsTable)
+    -- Находим модуль для получения его callback
     local moduleData = nil
     for category, modules in pairs(self.modules) do
         for _, module in ipairs(modules) do
@@ -357,6 +358,7 @@ function API:registerSettings(moduleName, settingsTable)
         if moduleData then break end
     end
     
+    -- Создаем переключатель Enabled с правильным callback
     local enabledToggle = {
         name = "Enabled",
         type = "toggle",
@@ -373,6 +375,7 @@ function API:registerSettings(moduleName, settingsTable)
         end
     }
     
+    -- Объединяем настройки
     local allSettings = {enabledToggle}
     for _, setting in ipairs(settingsTable) do
         table.insert(allSettings, setting)
@@ -380,14 +383,20 @@ function API:registerSettings(moduleName, settingsTable)
     
     self.settings[moduleName] = {settings = allSettings}
     
+    -- Загружаем сохраненные значения
     if self.savedSettings[moduleName] then
         for _, setting in ipairs(allSettings) do
-            if self.savedSettings[moduleName][setting.name] ~= nil then
-                setting.default = self.savedSettings[moduleName][setting.name]
+            local savedValue = self.savedSettings[moduleName][setting.name]
+            if savedValue ~= nil then
+                setting.default = savedValue
+                if setting.callback then
+                    pcall(setting.callback, savedValue) -- сразу применяем сохранённые значения
+                end
             end
         end
     end
     
+    -- Загружаем состояние модуля
     if self.savedModuleStates[moduleName] ~= nil then
         enabledToggle.default = self.savedModuleStates[moduleName]
         if moduleData then
@@ -395,6 +404,7 @@ function API:registerSettings(moduleName, settingsTable)
         end
     end
 end
+
 
 local moduleSystem = {
     activeCategory = nil,
