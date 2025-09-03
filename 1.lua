@@ -731,6 +731,67 @@ local function createDropDown(parent, setting, position)
     return frame
 end
 
+local function createButton(parent, setting, position)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 280, 0, 50)
+    frame.Position = position
+    frame.BackgroundTransparency = 1
+    frame.ZIndex = parent.ZIndex + 1
+    frame.Parent = parent
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0.6, 0, 1, 0)
+    label.Position = UDim2.new(0, 10, 0, 0)
+    label.Text = setting.name
+    label.TextColor3 = Color3.fromRGB(142, 142, 142)
+    label.Font = Enum.Font.SourceSansBold
+    label.TextSize = 22
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.BackgroundTransparency = 1
+    label.ZIndex = frame.ZIndex + 1
+    label.Parent = frame
+
+    local buttonBackground = Instance.new("TextButton")
+    buttonBackground.Size = UDim2.new(0, 120, 0, 30)
+    buttonBackground.Position = UDim2.new(0.6, 312, 0.5, -15)
+    buttonBackground.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    buttonBackground.BorderSizePixel = 0
+    buttonBackground.Text = setting.text or "Click"
+    buttonBackground.TextColor3 = Color3.fromRGB(200, 200, 200)
+    buttonBackground.Font = Enum.Font.SourceSansBold
+    buttonBackground.TextSize = 18
+    buttonBackground.AutoButtonColor = false
+    buttonBackground.ZIndex = frame.ZIndex + 1
+    buttonBackground.Parent = frame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = buttonBackground
+
+    -- Hover эффекты
+    buttonBackground.MouseEnter:Connect(function()
+        TweenService:Create(buttonBackground, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        }):Play()
+    end)
+
+    buttonBackground.MouseLeave:Connect(function()
+        TweenService:Create(buttonBackground, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        }):Play()
+    end)
+
+    -- Нажатие
+    buttonBackground.MouseButton1Click:Connect(function()
+        if setting.callback then
+            setting.callback()
+        end
+    end)
+
+    return frame
+end
+
+
 local function createTextField(parent, setting, position)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 280, 0, 50)
