@@ -528,7 +528,7 @@ local function createDropDown(parent, setting, position)
     local dropDownMenu = Instance.new("Frame")
     dropDownMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
     dropDownMenu.BorderSizePixel = 0
-    dropDownMenu.Visible = false
+    dropDownMenu.Visible = true
     dropDownMenu.ClipsDescendants = true
     dropDownMenu.ZIndex = 99999 -- Высокий Z-Index для dropdown
     dropDownMenu.Parent = frame
