@@ -377,11 +377,12 @@ function API:registerSettings(moduleName, settingsTable)
         end
     }
     
-    -- Объединяем настройки
-    local allSettings = {enabledToggle}
+    -- ИСПРАВЛЕНО: Пользовательские настройки идут первыми
+    local allSettings = {}
     for _, setting in ipairs(settingsTable) do
         table.insert(allSettings, setting)
     end
+    table.insert(allSettings, enabledToggle) -- Enabled добавляется в конец
     
     self.settings[moduleName] = {settings = allSettings}
     
