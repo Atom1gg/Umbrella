@@ -202,7 +202,7 @@ local function showNotification(text, notificationType, duration)
     iconLabel.Text = notifType.icon
     iconLabel.TextColor3 = notifType.color
     iconLabel.Font = Enum.Font.GothamBold
-    iconLabel.TextSize = 18
+    iconLabel.TextSize = 24
     iconLabel.BackgroundTransparency = 1
     iconLabel.TextXAlignment = Enum.TextXAlignment.Center
     iconLabel.ZIndex = notification.ZIndex + 1
