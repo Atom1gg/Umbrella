@@ -44,7 +44,9 @@ local API = {
     settings = {},
     callbacks = {},
     savedSettings = {},
-    savedModuleStates = {}
+    savedModuleStates = {},
+    isInitialized = false,  -- ДОБАВЛЕНО
+    pendingCallbacks = {}   -- ДОБАВЛЕНО
 }
 
 -- Система сохранения настроек с папкой пользователя
@@ -389,8 +391,17 @@ function API:registerSettings(moduleName, settingsTable)
             local savedValue = self.savedSettings[moduleName][setting.name]
             if savedValue ~= nil then
                 setting.default = savedValue
+                
+                -- ИСПРАВЛЕНО: Отложенное применение callback'ов
                 if setting.callback then
-                    pcall(setting.callback, savedValue) -- сразу применяем сохранённые значения
+                    if self.isInitialized then
+                        pcall(setting.callback, savedValue)
+                    else
+                        -- Добавляем в очередь для применения после инициализации
+                        table.insert(self.pendingCallbacks, function()
+                            pcall(setting.callback, savedValue)
+                        end)
+                    end
                 end
             end
         end
@@ -403,6 +414,15 @@ function API:registerSettings(moduleName, settingsTable)
             moduleData.enabled = self.savedModuleStates[moduleName]
         end
     end
+end
+
+-- ДОБАВЛЕНО: Функция для применения отложенных callback'ов
+function API:applyPendingCallbacks()
+    self.isInitialized = true
+    for _, callback in ipairs(self.pendingCallbacks) do
+        callback()
+    end
+    self.pendingCallbacks = {}
 end
 
 
@@ -1695,6 +1715,8 @@ function createMainUI()
     end)
     
     API:loadSettings()
+    task.wait(0.1) -- небольшая задержка для завершения всех процессов
+    API:applyPendingCallbacks()
 end
 
 function API:registerCallback(moduleName, callbacks)
