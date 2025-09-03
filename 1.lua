@@ -754,7 +754,7 @@ local function createButton(parent, setting, position)
     local buttonBackground = Instance.new("TextButton")
     buttonBackground.Size = UDim2.new(0, 120, 0, 30)
     buttonBackground.Position = UDim2.new(0.6, 312, 0.5, -15)
-    buttonBackground.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    buttonBackground.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
     buttonBackground.BorderSizePixel = 0
     buttonBackground.Text = setting.text or "Click"
     buttonBackground.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -771,13 +771,13 @@ local function createButton(parent, setting, position)
     -- Hover эффекты
     buttonBackground.MouseEnter:Connect(function()
         TweenService:Create(buttonBackground, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            BackgroundColor3 = Color3.fromRGB(30, 30, 32)
         }):Play()
     end)
 
     buttonBackground.MouseLeave:Connect(function()
         TweenService:Create(buttonBackground, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+            BackgroundColor3 = Color3.fromRGB(20, 20, 22)
         }):Play()
     end)
 
