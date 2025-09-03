@@ -483,7 +483,7 @@ local function createDropDown(parent, setting, position)
     frame.Size = UDim2.new(0, 280, 0, 50)
     frame.Position = position
     frame.BackgroundTransparency = 1
-    frame.ZIndex = parent.ZIndex + 1
+    frame.ZIndex = 50
     frame.Parent = parent
 
     local label = Instance.new("TextLabel")
@@ -524,14 +524,14 @@ local function createDropDown(parent, setting, position)
     selectedText.ZIndex = dropDownButton.ZIndex + 1
     selectedText.Parent = dropDownButton
 
-    -- ИСПРАВЛЕНО: Dropdown menu с правильным Z-Index
+    -- Dropdown menu - Ð¤ÐžÐ Ð”Ð ÐžÐŸÐ”ÐÐ£ÐÐ
     local dropDownMenu = Instance.new("Frame")
-    dropDownMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
+    dropDownMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 22) -- Ð¦Ð’Ð•Ð¢ Ð¤ÐžÐÐ Ð”Ð ÐžÐŸÐ”ÐÐ£ÐÐ
     dropDownMenu.BorderSizePixel = 0
-    dropDownMenu.Visible = true
+    dropDownMenu.Visible = false
     dropDownMenu.ClipsDescendants = true
-    dropDownMenu.ZIndex = 99999 -- Высокий Z-Index для dropdown
-    dropDownMenu.Parent = frame
+    dropDownMenu.ZIndex = 1000000
+    dropDownMenu.Parent = player.PlayerGui:FindFirstChild("MyUI")
 
     local menuCorner = Instance.new("UICorner")
     menuCorner.CornerRadius = UDim.new(0, 6)
@@ -541,7 +541,7 @@ local function createDropDown(parent, setting, position)
     optionsContainer.Size = UDim2.new(1, -10, 1, -10)
     optionsContainer.Position = UDim2.new(0, 5, 0, 5)
     optionsContainer.BackgroundTransparency = 1
-    optionsContainer.ZIndex = dropDownMenu.ZIndex + 1
+    optionsContainer.ZIndex = dropDownMenu.ZIndex
     optionsContainer.Parent = dropDownMenu
 
     local layout = Instance.new("UIListLayout")
@@ -583,14 +583,16 @@ local function createDropDown(parent, setting, position)
             animating = true
             isOpen = true
 
+            -- ÐžÑ‡Ð¸Ñ‰Ð°ÐµÐ¼ Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰Ð¸Ðµ Ð¾Ð¿Ñ†Ð¸Ð¸
             for _, child in ipairs(optionsContainer:GetChildren()) do
                 if child:IsA("TextButton") then child:Destroy() end
             end
 
+            -- Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð½Ð¾Ð²Ñ‹Ðµ Ð¾Ð¿Ñ†Ð¸Ð¸
             for _, option in ipairs(setting.options or {}) do
                 local optionButton = Instance.new("TextButton")
                 optionButton.Size = UDim2.new(1, 0, 0, 28)
-                optionButton.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
+                optionButton.BackgroundColor3 = Color3.fromRGB(20, 20, 22) -- Ð¦Ð²ÐµÑ‚ ÐºÐ½Ð¾Ð¿Ð¾Ðº
                 optionButton.Text = option
                 optionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
                 optionButton.Font = Enum.Font.SourceSans
@@ -603,6 +605,7 @@ local function createDropDown(parent, setting, position)
                 corner.CornerRadius = UDim.new(0, 4)
                 corner.Parent = optionButton
 
+                -- Ð¥Ð¾Ð²ÐµÑ€ ÑÑ„Ñ„ÐµÐºÑ‚
                 optionButton.MouseEnter:Connect(function()
                     if selectedText.Text ~= option then
                         TweenService:Create(optionButton, TweenInfo.new(0.2), {
@@ -633,7 +636,7 @@ local function createDropDown(parent, setting, position)
                     API.savedSettings[setting.moduleName][setting.name] = option
                     saveSettings()
                     
-                    closeMenu()
+                    closeMenu() -- Ð—ÐÐšÐ Ð«Ð’ÐÐ•Ðœ ÐŸÐžÐ¡Ð›Ð• Ð’Ð«Ð‘ÐžÐ Ð
                 end)
 
                 if selectedText.Text == option then
@@ -665,6 +668,7 @@ local function createDropDown(parent, setting, position)
                 animating = false
             end)
 
+            -- Ð—Ð°ÐºÑ€Ñ‹Ñ‚Ð¸Ðµ Ð¿Ñ€Ð¸ ÐºÐ»Ð¸ÐºÐµ Ð²Ð½Ðµ
             if clickConn then
                 clickConn:Disconnect()
             end
