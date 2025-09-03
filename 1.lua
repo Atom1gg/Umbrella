@@ -35,7 +35,7 @@ local ZINDEX = {
     BASE = 1000,              -- Базовый Z-Index для UI
     MAIN_FRAME = 1001,        -- Основная рамка
     NOTIFICATIONS = 2000,     -- Нотификации (самые высокие)
-    DROPDOWNS = 1500,         -- Выпадающие списки
+    DROPDOWNS = 5000,         -- Выпадающие списки
     TOGGLE_BUTTON = 1800      -- Кнопка переключения
 }
 
